@@ -5,7 +5,7 @@ import axios from 'axios';
  * Connects to Ollama running on cloud GPU
  */
 
-export const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://45.198.59.91:11434';
+export const OLLAMA_BASE_URL = process.env.OLLAMA_URL || process.env.OLLAMA_BASE_URL || 'http://45.198.59.91:11434';
 
 /**
  * Get available models from Ollama

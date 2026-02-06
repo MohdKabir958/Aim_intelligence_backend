@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Conversation {
+  id        String    @id @default(uuid())
+  title     String?   @default("New Conversation")
+  model     String?   @default("glm-4.7-flash")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  messages  Message[]
+
+  @@map("conversations")
+}
+
+model Message {
+  id               String       @id @default(uuid())
+  conversationId   String       @map("conversation_id")
+  role             String
+  content          String
+  thinking         String?
+  thinkingDuration Float?       @map("thinking_duration")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  conversation     Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  attachments      Attachment[]
+
+  @@map("messages")
+}
+
+model Attachment {
+  id           String   @id @default(uuid())
+  messageId    String   @map("message_id")
+  filename     String
+  originalName String   @map("original_name")
+  mimetype     String
+  size         Int
+  path         String
+  createdAt    DateTime @default(now()) @map("created_at")
+  message      Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@map("attachments")
+}

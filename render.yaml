@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: aim-intelligence-server
+    runtime: node
+    env: node
+    buildCommand: npm install && npx prisma generate
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: OLLAMA_URL
+        sync: false
+    # Render free tier sleeps after 15 min of inactivity
+    # Upgrade to keep it running 24/7

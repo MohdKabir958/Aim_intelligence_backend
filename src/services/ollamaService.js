@@ -17,7 +17,7 @@ export async function getModels() {
 
     try {
         const response = await axios.get(url, {
-            timeout: 10000
+            timeout: 30000 // 30 seconds for remote Ollama
         });
 
         console.log(`✅ [Ollama] Response status: ${response.status}`);
@@ -55,7 +55,7 @@ export async function getModels() {
 export async function checkHealth() {
     try {
         const response = await axios.get(`${OLLAMA_BASE_URL}/api/tags`, {
-            timeout: 5000
+            timeout: 15000 // 15 seconds for health check
         });
         return response.status === 200;
     } catch (error) {

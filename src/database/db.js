@@ -85,10 +85,18 @@ export async function updateConversation(id, data) {
 }
 
 export async function deleteConversation(id) {
-  await prisma.conversation.delete({
-    where: { id }
-  });
-  return { success: true };
+  try {
+    await prisma.conversation.delete({
+      where: { id }
+    });
+    return { success: true };
+  } catch (error) {
+    // P2025: Record not found - treat as success since conversation doesn't exist anyway
+    if (error.code === 'P2025') {
+      return { success: true };
+    }
+    throw error;
+  }
 }
 
 export async function addMessage(conversationId, message) {
